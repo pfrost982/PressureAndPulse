@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.gb.pressureandpulse.databinding.PressureAndPulseItemBinding
 import ru.gb.pressureandpulse.entity.PressureAndPulseEntity
+import kotlin.math.abs
 
 class Adapter(private val data: List<PressureAndPulseEntity>) :
     RecyclerView.Adapter<Adapter.ViewHolder>() {
@@ -23,13 +24,18 @@ class Adapter(private val data: List<PressureAndPulseEntity>) :
     inner class ViewHolder(private val binding: PressureAndPulseItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(entity: PressureAndPulseEntity) {
-            val hour = entity.dateTime.hour
-            val minute = entity.dateTime.minute
-            val time = "${String.format("%02d", hour)} : ${String.format("%02d", minute)}"
+            val time = "${String.format("%02d", entity.dateTime.hour)}:${String.format("%02d", entity.dateTime.minute)}"
             binding.time.text = time
             binding.topPressure.text = entity.topPressure.toString()
-            binding.lowerPressure.text = entity.lowerPressure.toString()
+            binding.bottomPressure.text = entity.bottomPressure.toString()
             binding.pulse.text = entity.pulse.toString()
+            val deviation = abs(entity.topPressure - 120) + abs(entity.bottomPressure - 80)
+            if (deviation in 31..60) {
+                binding.root.setBackgroundResource(R.drawable.gradient_yellow)
+            }
+            if (deviation > 60) {
+                binding.root.setBackgroundResource(R.drawable.gradient_orange)
+            }
         }
     }
 }

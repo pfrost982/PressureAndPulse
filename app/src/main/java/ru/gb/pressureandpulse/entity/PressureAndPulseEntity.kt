@@ -5,6 +5,6 @@ import java.time.LocalDateTime
 data class PressureAndPulseEntity(
     val dateTime: LocalDateTime,
     val topPressure: Int,
-    val lowerPressure: Int,
+    val bottomPressure: Int,
     val pulse: Int
 )
