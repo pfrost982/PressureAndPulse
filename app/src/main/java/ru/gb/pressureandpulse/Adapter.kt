@@ -10,8 +10,15 @@ import ru.gb.pressureandpulse.entity.PressureAndPulseEntity
 import ru.gb.pressureandpulse.entity.RecyclerItem
 import kotlin.math.abs
 
-class Adapter(private val data: List<RecyclerItem>) :
+class Adapter() :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    private var data = listOf<RecyclerItem>()
+
+    fun submitList(newList: List<RecyclerItem>) {
+        data = newList
+        notifyDataSetChanged()
+    }
 
     override fun getItemViewType(position: Int): Int {
         return when (data[position]) {
@@ -71,7 +78,7 @@ class Adapter(private val data: List<RecyclerItem>) :
         private val binding: DateItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(entity: DateEntity) {
-            var date = "$entity.date.dayOfMonth.toString() "
+            var date = "${entity.date.dayOfMonth} "
             date += when (entity.date.monthValue) {
                 1 -> "января"
                 2 -> "февраля"
