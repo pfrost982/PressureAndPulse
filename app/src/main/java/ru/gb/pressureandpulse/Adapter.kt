@@ -71,24 +71,21 @@ class Adapter(private val data: List<RecyclerItem>) :
         private val binding: DateItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(entity: DateEntity) {
-            val date = java.lang.StringBuilder(entity.date.dayOfMonth.toString())
-            date.append(" ")
-            date.append(
-                when(entity.date.monthValue){
-                    1 -> "января"
-                    2 -> "февраля"
-                    3 -> "марта"
-                    4 -> "апреля"
-                    5 -> "мая"
-                    6 -> "июня"
-                    7 -> "июля"
-                    8 -> "августа"
-                    9 -> "сентября"
-                    10 -> "октября"
-                    11 -> "ноября"
-                    else -> "декабря"
-                }
-            )
+            var date = "$entity.date.dayOfMonth.toString() "
+            date += when (entity.date.monthValue) {
+                1 -> "января"
+                2 -> "февраля"
+                3 -> "марта"
+                4 -> "апреля"
+                5 -> "мая"
+                6 -> "июня"
+                7 -> "июля"
+                8 -> "августа"
+                9 -> "сентября"
+                10 -> "октября"
+                11 -> "ноября"
+                else -> "декабря"
+            }
             binding.date.text = date
         }
     }
