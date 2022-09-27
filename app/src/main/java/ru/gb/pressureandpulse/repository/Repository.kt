@@ -1,7 +1,7 @@
 package ru.gb.pressureandpulse.repository
 
-import ru.gb.pressureandpulse.entity.PressureAndPulseEntity
+import ru.gb.pressureandpulse.entity.RecyclerItem
 
 interface Repository {
-    fun getData(): List<PressureAndPulseEntity>
+    fun getData(): List<RecyclerItem>
 }

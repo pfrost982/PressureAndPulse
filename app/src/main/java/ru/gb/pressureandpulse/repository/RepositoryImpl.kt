@@ -5,6 +5,7 @@ import java.time.LocalDateTime
 
 class RepositoryImpl : Repository {
     private val data = listOf(
+        PressureAndPulseEntity(LocalDateTime.of(2022, 4, 18, 15, 0), 130, 85, 70),
         PressureAndPulseEntity(LocalDateTime.of(2022, 2, 16, 11, 35), 150, 99, 95),
         PressureAndPulseEntity(LocalDateTime.of(2022, 3, 17, 12, 40), 160, 109, 105),
         PressureAndPulseEntity(LocalDateTime.of(2022, 1, 15, 10, 30), 140, 89, 85),

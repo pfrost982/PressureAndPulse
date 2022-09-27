@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import ru.gb.pressureandpulse.databinding.ActivityMainBinding
 import ru.gb.pressureandpulse.repository.RepositoryImpl
+import ru.gb.pressureandpulse.util.toAdapterList
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -11,8 +12,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        var list = RepositoryImpl().getData()
-        list = list.sortedBy { it.dateTime }
-        binding.recyclerView.adapter = Adapter(list)
+        val list = RepositoryImpl().getData()
+        binding.recyclerView.adapter = Adapter(list.toAdapterList())
     }
 }
