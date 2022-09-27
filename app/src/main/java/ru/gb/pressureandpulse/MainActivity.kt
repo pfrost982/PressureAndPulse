@@ -11,7 +11,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        binding.recyclerView.adapter = Adapter(RepositoryImpl().getData())
+        var list = RepositoryImpl().getData()
+        list = list.sortedBy { it.dateTime }
+        binding.recyclerView.adapter = Adapter(list)
     }
 }

@@ -7,4 +7,4 @@ data class PressureAndPulseEntity(
     val topPressure: Int,
     val bottomPressure: Int,
     val pulse: Int
-)
+): RecyclerItem
