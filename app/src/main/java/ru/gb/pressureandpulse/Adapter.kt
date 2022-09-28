@@ -8,9 +8,10 @@ import ru.gb.pressureandpulse.databinding.PressureAndPulseItemBinding
 import ru.gb.pressureandpulse.entity.DateEntity
 import ru.gb.pressureandpulse.entity.PressureAndPulseEntity
 import ru.gb.pressureandpulse.entity.RecyclerItem
+import ru.gb.pressureandpulse.util.toLocalDateTime
 import kotlin.math.abs
 
-class Adapter() :
+class Adapter :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var data = listOf<RecyclerItem>()
@@ -54,10 +55,10 @@ class Adapter() :
         private val binding: PressureAndPulseItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(entity: PressureAndPulseEntity) {
-            val time = "${String.format("%02d", entity.dateTime.hour)}:${
+            val time = "${String.format("%02d", entity.dateTime.toLocalDateTime().hour)}:${
                 String.format(
                     "%02d",
-                    entity.dateTime.minute
+                    entity.dateTime.toLocalDateTime().minute
                 )
             }"
             binding.time.text = time
