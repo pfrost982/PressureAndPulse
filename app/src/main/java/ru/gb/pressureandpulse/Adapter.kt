@@ -11,10 +11,14 @@ import ru.gb.pressureandpulse.entity.RecyclerItem
 import ru.gb.pressureandpulse.util.toLocalDateTime
 import kotlin.math.abs
 
-class Adapter :
+class Adapter(private val itemListener: OnItemViewLongClickListener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var data = listOf<RecyclerItem>()
+
+    fun interface OnItemViewLongClickListener {
+        fun onLongClick(entity: PressureAndPulseEntity)
+    }
 
     fun submitList(newList: List<RecyclerItem>) {
         data = newList
@@ -55,6 +59,10 @@ class Adapter :
         private val binding: PressureAndPulseItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(entity: PressureAndPulseEntity) {
+            binding.root.setOnLongClickListener {
+                itemListener.onLongClick(entity)
+                true
+            }
             val time = "${String.format("%02d", entity.dateTime.toLocalDateTime().hour)}:${
                 String.format(
                     "%02d",
@@ -65,7 +73,7 @@ class Adapter :
             binding.topPressure.text = entity.topPressure.toString()
             binding.bottomPressure.text = entity.bottomPressure.toString()
             binding.pulse.text = entity.pulse.toString()
-            val deviation = abs(entity.topPressure - 120) + abs(entity.bottomPressure - 80)
+            val deviation = abs((entity.topPressure + entity.bottomPressure) - 200)
             if (deviation in 31..60) {
                 binding.root.setBackgroundResource(R.drawable.gradient_yellow)
             }

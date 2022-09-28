@@ -16,7 +16,7 @@ fun List<PressureAndPulseEntity>.toAdapterList(): List<RecyclerItem> {
         return recyclerItemList
     }
     val sortedList = this.sortedBy { it.dateTime }
-    var currentDate = sortedList[0].dateTime.toLocalDateTime().toLocalDate()
+    var currentDate = sortedList.first().dateTime.toLocalDateTime().toLocalDate()
     recyclerItemList.add(DateEntity(currentDate))
     for (position in sortedList.indices) {
         if (currentDate < sortedList[position].dateTime.toLocalDateTime().toLocalDate()) {

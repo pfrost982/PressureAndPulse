@@ -7,12 +7,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import ru.gb.pressureandpulse.databinding.ActivityMainBinding
 import ru.gb.pressureandpulse.databinding.DialogNewEntityBinding
+import ru.gb.pressureandpulse.entity.PressureAndPulseEntity
 import ru.gb.pressureandpulse.util.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: MainViewModel
-    private val adapter = Adapter()
+    private val adapter = Adapter { deleteEntityDialog(it) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -45,5 +47,20 @@ class MainActivity : AppCompatActivity() {
         val alertDialog = dialogBuilder.create()
         alertDialog.show()
     }
+
+    private fun deleteEntityDialog(entity: PressureAndPulseEntity) {
+        val dialogBuilder = AlertDialog.Builder(this)
+        dialogBuilder
+            .setTitle("Удаление записи")
+            .setMessage("Вы действительно хотите удалить запись?")
+            .setCancelable(false)
+            .setPositiveButton("Ok") { _, _ ->
+                viewModel.deleteEntity(entity)
+            }
+            .setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
+        val alertDialog = dialogBuilder.create()
+        alertDialog.show()
+    }
+
 }
 
