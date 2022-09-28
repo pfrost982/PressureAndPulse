@@ -5,8 +5,8 @@ import java.util.*
 
 data class PressureAndPulseEntity(
     val dateTime: LocalDateTime = LocalDateTime.now(),
-    val topPressure: Int = 120,
-    val bottomPressure: Int = 80,
-    val pulse: Int = 65,
-    val id: String = UUID.randomUUID().toString()
+    val topPressure: Int = 0,
+    val bottomPressure: Int = 0,
+    val pulse: Int = 0,
+    val id: String = ""
 ) : RecyclerItem

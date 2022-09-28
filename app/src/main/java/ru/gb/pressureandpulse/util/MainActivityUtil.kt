@@ -7,6 +7,7 @@ import ru.gb.pressureandpulse.entity.DateEntity
 import ru.gb.pressureandpulse.entity.PressureAndPulseEntity
 import ru.gb.pressureandpulse.entity.RecyclerItem
 import java.time.LocalDateTime
+import java.util.*
 
 fun List<PressureAndPulseEntity>.toAdapterList(): List<RecyclerItem> {
     val recyclerItemList = mutableListOf<RecyclerItem>()
@@ -62,6 +63,7 @@ fun DialogNewEntityBinding.createEntity(): PressureAndPulseEntity {
         ),
         Integer.parseInt(this.topPressureEdit.text.toString()),
         Integer.parseInt(this.bottomPressureEdit.text.toString()),
-        Integer.parseInt(this.pulseEdit.text.toString())
+        Integer.parseInt(this.pulseEdit.text.toString()),
+        UUID.randomUUID().toString()
     )
 }

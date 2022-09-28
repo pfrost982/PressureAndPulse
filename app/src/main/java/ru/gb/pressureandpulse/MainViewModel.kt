@@ -38,7 +38,9 @@ class MainViewModel : ViewModel() {
         _liveData.postValue(list)
     }
 
-    fun deleteEntity(id: String) {
-
+    fun deleteEntity(entity: PressureAndPulseEntity) {
+        list.remove(entity)
+        repository.deleteEntity(entity)
+        _liveData.postValue(list)
     }
 }
