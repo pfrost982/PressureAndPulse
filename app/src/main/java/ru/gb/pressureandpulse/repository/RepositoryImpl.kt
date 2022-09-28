@@ -7,7 +7,20 @@ import ru.gb.pressureandpulse.entity.PressureAndPulseEntity
 
 class RepositoryImpl(private val db: FirebaseFirestore) : Repository {
 
-    override fun getData(onSuccessListener: OnSuccessListener<QuerySnapshot>) {
+    private lateinit var result: Result
+
+    private val onSuccessListener: OnSuccessListener<QuerySnapshot> =
+        OnSuccessListener { queryDocumentSnapshots ->
+            if (queryDocumentSnapshots == null) return@OnSuccessListener
+            val list = mutableListOf<PressureAndPulseEntity>()
+            for (queryDocumentSnapshot in queryDocumentSnapshots) {
+                list.add(queryDocumentSnapshot.toObject(PressureAndPulseEntity::class.java))
+            }
+            result.onSuccess(list)
+        }
+
+    override fun getData(result: Result) {
+        this.result = result
         db.collection(COLLECTION).get()
             .addOnSuccessListener(onSuccessListener)
     }
