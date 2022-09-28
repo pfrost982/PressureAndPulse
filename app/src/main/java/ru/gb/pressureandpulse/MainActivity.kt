@@ -1,13 +1,13 @@
 package ru.gb.pressureandpulse
 
 import android.os.Bundle
-import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import ru.gb.pressureandpulse.databinding.ActivityMainBinding
 import ru.gb.pressureandpulse.databinding.DialogNewEntityBinding
-import ru.gb.pressureandpulse.util.toAdapterList
+import ru.gb.pressureandpulse.util.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -28,12 +28,18 @@ class MainActivity : AppCompatActivity() {
 
     private fun newEntityDialog() {
         val dialogView = DialogNewEntityBinding.inflate(layoutInflater)
+        dialogView.hourEdit.filters = arrayOf(InputFilterMinMax(0, 24))
+        dialogView.minuteEdit.filters = arrayOf(InputFilterMinMax(0, 59))
         val dialogBuilder = AlertDialog.Builder(this)
         dialogBuilder.setView(dialogView.root)
         dialogBuilder
             .setCancelable(false)
             .setPositiveButton("Ok") { _, _ ->
-                //viewModel.addEntity
+                if (dialogView.isDataValid()) {
+                    viewModel.addEntity(dialogView.createEntity())
+                } else {
+                    Toast.makeText(this, "Поля не должны быть пустыми!", Toast.LENGTH_SHORT).show()
+                }
             }
             .setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
         val alertDialog = dialogBuilder.create()
