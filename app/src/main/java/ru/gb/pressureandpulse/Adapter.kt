@@ -2,6 +2,8 @@ package ru.gb.pressureandpulse
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.gb.pressureandpulse.databinding.DateItemBinding
 import ru.gb.pressureandpulse.databinding.PressureAndPulseItemBinding
@@ -14,19 +16,30 @@ import kotlin.math.abs
 class Adapter(private val itemListener: OnItemViewLongClickListener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var data = listOf<RecyclerItem>()
+    private val diffUtil = AsyncListDiffer(this, object : DiffUtil.ItemCallback<RecyclerItem>() {
+        override fun areItemsTheSame(oldItem: RecyclerItem, newItem: RecyclerItem): Boolean =
+            same(oldItem, newItem)
+
+        override fun areContentsTheSame(oldItem: RecyclerItem, newItem: RecyclerItem): Boolean =
+            same(oldItem, newItem)
+    })
+
+    private fun same(oldItem: RecyclerItem, newItem: RecyclerItem): Boolean {
+        if (oldItem is PressureAndPulseEntity && newItem is PressureAndPulseEntity && oldItem.id == newItem.id) return true
+        if (oldItem is DateEntity && newItem is DateEntity && oldItem.date == newItem.date) return true
+        return false
+    }
 
     fun interface OnItemViewLongClickListener {
         fun onLongClick(entity: PressureAndPulseEntity)
     }
 
     fun submitList(newList: List<RecyclerItem>) {
-        data = newList
-        notifyDataSetChanged()
+        diffUtil.submitList(newList)
     }
 
     override fun getItemViewType(position: Int): Int {
-        return when (data[position]) {
+        return when (diffUtil.currentList[position]) {
             is PressureAndPulseEntity -> 0
             else -> 1
         }
@@ -48,12 +61,12 @@ class Adapter(private val itemListener: OnItemViewLongClickListener) :
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (this.getItemViewType(position)) {
-            0 -> (holder as PressureAndPulseViewHolder).bind(data[position] as PressureAndPulseEntity)
-            else -> (holder as DateViewHolder).bind(data[position] as DateEntity)
+            0 -> (holder as PressureAndPulseViewHolder).bind(diffUtil.currentList[position] as PressureAndPulseEntity)
+            else -> (holder as DateViewHolder).bind(diffUtil.currentList[position] as DateEntity)
         }
     }
 
-    override fun getItemCount(): Int = data.size
+    override fun getItemCount(): Int = diffUtil.currentList.size
 
     inner class PressureAndPulseViewHolder(
         private val binding: PressureAndPulseItemBinding
